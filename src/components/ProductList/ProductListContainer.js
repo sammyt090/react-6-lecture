@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ProductList from './ProductList'
 import './productList.css'
+import {connect} from 'react-redux'
+import {loginUser} from '../../ducks/userReducer'
 
 class ProductListContainer extends Component {
   constructor() {
@@ -23,6 +25,7 @@ class ProductListContainer extends Component {
         </h1>
         {this.props.isLoggedIn ? (
           <ProductList />
+          
         ) : (
           <div className="form">
             <input
@@ -30,11 +33,16 @@ class ProductListContainer extends Component {
               placeholder="Username"
               onChange={this.handleChange}
             />
-            <button>Sign In</button>
+            <button onClick ={() => this.props.loginUser(this.state.userInput)}>Sign In</button>
           </div>
         )}
       </div>
     )
   }
 }
-export default ProductListContainer
+
+const mapStateToProps = (reduxState) => {
+  return reduxState.user
+}
+
+export default connect(mapStateToProps, { loginUser})(ProductListContainer)
